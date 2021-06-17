@@ -1,14 +1,18 @@
 const canvasContainer = document.querySelector('#canvas');
 const changeCanvasSizeBtn = document.querySelector('#changeCanvasSize');
 const switchColorBtn = document.querySelector('#switchColor');
+const clearCanvasBtn = document.querySelector('#clearCanvas');
 
-let rainbow = false;
+let rainbow = false; // if true, the canvas is painted with rgb colors
+let currSize = 16; // tracks the current size of the canvas. used for clearing the board
 
+// called to initialize game
 function initialize() {
-	setCanvas(15);
+	setCanvas(currSize);
 	addEventListeners();
 }
 
+// adds all the squares in and sets the canvas width and height
 function setCanvas(sideLength) {
 	let canvasSize = getCanvasSize(sideLength);
 
@@ -27,6 +31,8 @@ function setCanvas(sideLength) {
 	}
 }
 
+// gets canvas size and checks if it is too large
+// NOTE: the resizing doesn't work because it makes whitespaces at the edges due to flex box overflow
 function getCanvasSize(sideLength) {
 	let canvasSize = sideLength ** 2;
 
@@ -41,6 +47,7 @@ function getCanvasSize(sideLength) {
 	return canvasSize;
 }
 
+// returns a random number from min to max
 function randInt(min, max)  {
 	min = Math.ceil(min);
 	max = Math.floor(max);
@@ -48,13 +55,16 @@ function randInt(min, max)  {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// changes square color when hovered
 function changeSquareColor(square) {
+	// if rainbow === true, then do rainbow colors
 	if(rainbow) {
 		if(square.classList.contains('hovered')) {
 			if(square.style.opacity >= .1) {
 				square.style.opacity = square.style.opacity - .1;
 			}
 		}else {
+			// get random number from 1 to 255 for rgb()
 			const r = randInt(1, 255);
 			const g = randInt(1, 255);
 			const b = randInt(1, 255);
@@ -63,36 +73,54 @@ function changeSquareColor(square) {
 			square.classList.remove('black');
 			square.classList.add('hovered');
 		}
-	}else {
+	} // else, use black and white
+	else {
 		square.classList.remove('hovered');
 		square.classList.toggle('black');
-		square.style['background-color'] = 'none';
+		square.style['background-color'] = '#efefef';
 	}
 }
 
+// resets canvas to original, no children state
 function removeCanvas() {
 	canvasContainer.style = '';
-	while (canvasContainer.firstChild) {
+	while(canvasContainer.firstChild) {
 		canvasContainer.removeChild(canvasContainer.lastChild);
 	}
 }
 
+// toggles rainbow value and changes switchColorBtn text
+function switchColor() {
+	rainbow = !rainbow;
+	switchColorBtn.textContent = `Rainbow paintbrush : ${rainbow}`
+}
+
+
+// prompts user for new size of canvas
+function askForNumOfSides() {
+	let newSize = +prompt('Enter the number of squares you want for each side', 16)
+
+	if(isNaN(newSize)) return alert('Invalid input: Must be a number!');
+	if(newSize > 100) newSize = 100;
+	if(newSize < 1) newSize = 1;
+
+	currSize = newSize;
+
+	removeCanvas();
+	setCanvas(newSize);
+}
+
+// clears canvas by destroying and remaking canvas
+function clearCanvas() {
+	removeCanvas();
+	setCanvas(currSize);
+}
+
+// adds the required event listeners
 function addEventListeners() {
-	changeCanvasSizeBtn.addEventListener('click', () => {
-		let newSize = +prompt('Enter a new size for the canvas', 16)
-
-		if(isNaN(newSize)) return alert('Invalid input: Must be a number!');
-		if(newSize > 100) newSize = 100;
-		if(newSize < 1) newSize = 1;
-
-		removeCanvas();
-		setCanvas(newSize);
-	});
-
-	switchColorBtn.addEventListener('click', () => {
-		rainbow = !rainbow;
-		switchColorBtn.textContent = `Rainbow paintbrush : ${rainbow}`
-	})
+	changeCanvasSizeBtn.addEventListener('click', askForNumOfSides);
+	switchColorBtn.addEventListener('click', switchColor);
+	clearCanvasBtn.addEventListener('click', clearCanvas);
 }
 
 initialize();
