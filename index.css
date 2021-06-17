@@ -1,20 +1,74 @@
+/* ====================
+	Element styles
+==================== */
+
+html {
+	font-family: monospace;
+	background-color: #eeeeee;
+	height: 100%;
+}
+
+body{
+	min-height: 100%;
+}
+
 main {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-h1 {
-	font-family: monospace;
+button {
+	margin: 5px;
+	font-size: small;
 }
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus-visible {
+	outline: none;
+}
+
+/* ====================
+	Class styles
+==================== */
+
+.black {
+	background-color: black !important;
+	opacity: 1 !important;
+}
+
+.container {
+	display: flex;
+}
+
+.vertical {
+	flex-direction: column;
+}
+
+.center {
+	justify-content: center;
+	align-items: center;
+}
+
+.grow {
+	flex-grow: 1;
+}
+
+/* ====================
+	ID styles
+==================== */
 
 #canvas {
 	background-color: #efefef;
 	display: flex; 
 	flex-wrap: wrap;
 	border: 5px solid #333333;
-}
-
-.hovered {
-	background-color: black;
 }
