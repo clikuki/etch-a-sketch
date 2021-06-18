@@ -32,7 +32,7 @@ function setCanvas(sideLength) {
 }
 
 // gets canvas size and checks if it is too large
-// NOTE: the resizing doesn't work because it makes whitespaces at the edges due to flex box overflow
+// NOTE: the resizing doesn't work because it makes whitespaces at the edges due to flexbox overflow
 function getCanvasSize(sideLength) {
 	let canvasSize = sideLength ** 2;
 
@@ -92,17 +92,22 @@ function removeCanvas() {
 // toggles rainbow value and changes switchColorBtn text
 function switchColor() {
 	rainbow = !rainbow;
-	switchColorBtn.textContent = `Rainbow paintbrush : ${rainbow}`
+	switchColorBtn.textContent = `Rainbow paintbrush : ${capitalizeFirstLetter(rainbow.toString())}`
 }
 
+function capitalizeFirstLetter(str) {
+	const result = str.charAt(0).toUpperCase() + str.slice(1);
+	return result;
+}
 
 // prompts user for new size of canvas
 function askForNumOfSides() {
-	let newSize = +prompt('Enter the number of squares you want for each side', 16)
+	let newSize = prompt('Enter the number of squares you want for each side', currSize)
 
-	if(isNaN(newSize)) return alert('Invalid input: Must be a number!');
-	if(newSize > 100) newSize = 100;
-	if(newSize < 1) newSize = 1;
+	if(newSize === null) return; // if null, then user has canceled prompt
+	if(isNaN(+newSize)) return alert('Invalid input: Must be a number!');
+	if(+newSize > 100) newSize = 100;
+	if(+newSize < 1) newSize = 1;
 
 	currSize = newSize;
 
