@@ -23,6 +23,10 @@ button {
 	font-size: small;
 }
 
+h1 {
+	text-align: center;
+}
+
 a {
 	text-decoration: none;
 	color: inherit;
@@ -67,8 +71,16 @@ a:focus-visible {
 ==================== */
 
 #canvas {
+	--cols: 1;
+	width: 100px;
+	height: 100px;
+	display: inline-grid;
+	grid-template-columns: repeat(var(--cols), 1fr);
+	grid-template-rows: repeat(var(--cols), 1fr);
+	column-gap: 2px;
+	row-gap: 2px;
+	vertical-align: top;
+	margin: 0 10px 10px 0;
 	background-color: #efefef;
-	display: flex; 
-	flex-wrap: wrap;
 	border: 5px solid #333333;
 }

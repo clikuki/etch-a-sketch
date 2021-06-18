@@ -5,6 +5,7 @@ const clearCanvasBtn = document.querySelector('#clearCanvas');
 
 let rainbow = false; // if true, the canvas is painted with rgb colors
 let currSize = 16; // tracks the current size of the canvas. used for clearing the board
+let canvasSize; // hold the size of the canvas
 
 // called to initialize game
 function initialize() {
@@ -14,14 +15,17 @@ function initialize() {
 
 // adds all the squares in and sets the canvas width and height
 function setCanvas(sideLength) {
-	let canvasSize = getCanvasSize(sideLength);
+	canvasSize = getCanvasSize();
 
-	canvasContainer.style.cssText = `width: ${canvasSize}px; height: ${canvasSize}px;`;
+	fillCanvas(sideLength);
+	sizeCanvas();
+}
 
+// fill canvas with divs
+function fillCanvas(sideLength) {
 	for(let i = 0; i < sideLength ** 2; i++) {
 		const square = document.createElement('div');
 		square.classList.add('square');
-		square.style.cssText = `width: ${canvasSize / sideLength}px;`;
 	
 		square.addEventListener('mouseover', (e) => {
 			changeSquareColor(e.target)
@@ -31,19 +35,22 @@ function setCanvas(sideLength) {
 	}
 }
 
+// size the canvas and its items
+function sizeCanvas() {
+	canvasContainer.style.cssText = `width: ${canvasSize}px; height: ${canvasSize}px;`;
+	canvasContainer.style.setProperty('--cols', Math.ceil(Math.sqrt(canvasContainer.children.length)));
+}
+
 // gets canvas size and checks if it is too large
-// NOTE: the resizing doesn't work because it makes whitespaces at the edges due to flexbox overflow
-function getCanvasSize(sideLength) {
-	let canvasSize = sideLength ** 2;
-
-	if(canvasSize > (window.innerWidth / 2)) {
-		canvasSize = window.innerWidth / 2;
+function getCanvasSize() {
+	let canvasSize;
+		
+	if(innerWidth > innerHeight) {
+		canvasSize = innerHeight / 2;
+	}else {
+		canvasSize = innerWidth / 2;
 	}
-
-	if(canvasSize < (window.innerWidth / 4)) {
-		canvasSize = window.innerWidth / 4;
-	}
-	
+		
 	return canvasSize;
 }
 
@@ -126,6 +133,12 @@ function addEventListeners() {
 	changeCanvasSizeBtn.addEventListener('click', askForNumOfSides);
 	switchColorBtn.addEventListener('click', switchColor);
 	clearCanvasBtn.addEventListener('click', clearCanvas);
+
+	window.addEventListener('resize', () => {
+		canvasSize = getCanvasSize()
+
+		sizeCanvas()
+	})
 }
 
 initialize();
