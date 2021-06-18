@@ -19,8 +19,16 @@ main {
 }
 
 button {
+	background-color: #efefef;
 	margin: 5px;
 	font-size: small;
+	border: 1px solid black;
+	border-radius: 5px;
+	box-shadow: 2px 2px 1px #444444;
+}
+
+button:hover {
+	box-shadow: 3px 3px 1px #444444;
 }
 
 h1 {
@@ -66,6 +74,10 @@ a:focus-visible {
 	flex-grow: 1;
 }
 
+.square {
+	background-color: #efefef;
+}
+
 /* ====================
 	ID styles
 ==================== */
@@ -81,6 +93,6 @@ a:focus-visible {
 	row-gap: 2px;
 	vertical-align: top;
 	margin: 0 10px 10px 0;
-	background-color: #efefef;
+	background-color: #bbbbbb;
 	border: 5px solid #333333;
 }
