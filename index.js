@@ -15,8 +15,6 @@ function initialize() {
 
 // adds all the squares in and sets the canvas width and height
 function setCanvas(sideLength) {
-	canvasSize = getCanvasSize();
-
 	fillCanvas(sideLength);
 	sizeCanvas();
 }
@@ -37,6 +35,8 @@ function fillCanvas(sideLength) {
 
 // size the canvas and its items
 function sizeCanvas() {
+	canvasSize = getCanvasSize();
+
 	canvasContainer.style.cssText = `width: ${canvasSize}px; height: ${canvasSize}px;`;
 	canvasContainer.style.setProperty('--cols', Math.ceil(Math.sqrt(canvasContainer.children.length)));
 }
@@ -134,11 +134,7 @@ function addEventListeners() {
 	switchColorBtn.addEventListener('click', switchColor);
 	clearCanvasBtn.addEventListener('click', clearCanvas);
 
-	window.addEventListener('resize', () => {
-		canvasSize = getCanvasSize()
-
-		sizeCanvas()
-	})
+	window.addEventListener('resize', sizeCanvas)
 }
 
 initialize();
