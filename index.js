@@ -66,27 +66,33 @@ function randInt(min, max)  {
 function changeSquareColor(square) {
 	// if rainbow === true, then do rainbow colors
 	if(rainbow) {
-		if(square.classList.contains('hovered')) {
-			if(square.style.opacity >= .1) {
-				square.style.opacity = square.style.opacity - .1;
-			}
+		if(square.classList.contains('rainbow')) {
+			const newColor = linearShade(-.1, square.style['background-color']);
+
+			square.style['background-color'] = newColor;
 		}else {
 			// get random number from 1 to 255 for rgb()
 			const r = randInt(1, 255);
 			const g = randInt(1, 255);
 			const b = randInt(1, 255);
+			const newColor = `background-color: rgb(${r}, ${g}, ${b}); opacity: 1;`;
 		
-			square.style.cssText += `background-color: rgb(${r}, ${g}, ${b}); opacity: 1;`;
+			square.style.cssText = newColor;
 			square.classList.remove('black');
-			square.classList.add('hovered');
+			square.classList.add('rainbow');
 		}
 	} // else, use black and white
 	else {
-		square.classList.remove('hovered');
+		square.classList.remove('rainbow');
 		square.classList.toggle('black');
 		square.style['background-color'] = '#efefef';
-		square.style.opacity = 1;
 	}
+}
+
+// function to shade colors from https://stackoverflow.com/a/13542669
+function linearShade(p,c){
+    var i=parseInt,r=Math.round,[a,b,c,d]=c.split(","),P=p<0,t=P?0:255*p,P=P?1+p:1-p;
+    return"rgb"+(d?"a(":"(")+r(i(a[3]=="a"?a.slice(5):a.slice(4))*P+t)+","+r(i(b)*P+t)+","+r(i(c)*P+t)+(d?","+d:")");
 }
 
 // resets canvas to original, no children state
@@ -125,8 +131,12 @@ function askForNumOfSides() {
 
 // clears canvas by destroying and remaking canvas
 function clearCanvas() {
-	removeCanvas();
-	setCanvas(currSize);
+	const squareArray = document.querySelectorAll('.square');
+
+	for(const square of squareArray) {
+		square.classList.remove('rainbow', 'black');
+		square.style.cssText = '';
+	}
 }
 
 // adds the required event listeners
