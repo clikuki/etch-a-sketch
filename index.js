@@ -85,6 +85,7 @@ function changeSquareColor(square) {
 		square.classList.remove('hovered');
 		square.classList.toggle('black');
 		square.style['background-color'] = '#efefef';
+		square.style.opacity = 1;
 	}
 }
 

@@ -89,8 +89,8 @@ a:focus-visible {
 	display: inline-grid;
 	grid-template-columns: repeat(var(--cols), 1fr);
 	grid-template-rows: repeat(var(--cols), 1fr);
-	column-gap: 2px;
-	row-gap: 2px;
+	column-gap: 1px;
+	row-gap: 1px;
 	vertical-align: top;
 	margin: 0 10px 10px 0;
 	background-color: #bbbbbb;
